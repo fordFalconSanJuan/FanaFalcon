@@ -1,0 +1,144 @@
+<div class="min-h-screen bg-gradient-to-br from-gray-900 to-black text-white">
+
+  <div class="relative min-h-screen flex flex-col items-center justify-center pt-20 pb-10 sm:pt-24 sm:pb-12">
+
+    <div class="fixed inset-0 z-0">
+      <app-carousel></app-carousel>
+    </div>
+    <div class="fixed inset-0 bg-black/60 z-10"></div>
+
+    <div class="relative z-20 text-center px-4 sm:px-8 py-6 sm:py-8 max-w-5xl w-full
+                bg-gray-900/10 backdrop-blur-xl rounded-2xl shadow-2xl border border-blue-500/30
+                before:absolute before:inset-0 before:bg-[url('assets/images/sanJuanVectorB.png')] before:bg-no-repeat before:bg-center before:bg-contain before:opacity-20 before:rounded-2xl before:-z-10
+                after:absolute after:inset-0 after:bg-gray-900/15 after:rounded-2xl after:-z-5">
+
+      <div class="relative mb-6 sm:mb-8 z-10">
+        <img
+          ngSrc="assets/images/logo.png"
+          alt="Logo"
+          class="h-32 w-32 sm:h-52 sm:w-52 rounded-full object-cover mx-auto transform transition-transform duration-300 hover:scale-105 ring-4 ring-blue-500/50 shadow-2xl"
+          height="1024" width="1024"/>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 justify-items-center z-10 mb-6">
+        <div
+          *ngFor="let album of paginatedAlbums; let i = index"
+          (click)="openAlbum(getAlbumIndex(i))"
+          class="relative w-full max-w-xs sm:w-64 h-32 sm:h-40 rounded-lg cursor-pointer hover:scale-105 transition-all duration-300 overflow-hidden group"
+        >
+          <div class="absolute inset-0 bg-gradient-to-br from-gray-800/70 to-gray-900/80 backdrop-blur-sm"></div>
+          <div class="absolute inset-0 border-2 border-blue-500/60 rounded-lg group-hover:border-blue-400/80 transition-colors duration-300"></div>
+          <div class="relative z-10 flex flex-col justify-center items-center text-center p-3 sm:p-4 h-full">
+            <div class="text-sm sm:text-lg font-bold text-white mb-1 sm:mb-2 px-2 uppercase tracking-wider racing-font text-chrome">
+              {{ album.title }}
+            </div>
+            <div class="text-xs sm:text-sm text-blue-300 font-medium" style="font-family: 'Rajdhani', sans-serif;">
+              {{ album.photos.length }} fotos
+            </div>
+            <div class="absolute inset-0 bg-blue-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg"></div>
+          </div>
+          <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-blue-400/50 to-transparent transform -translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
+        </div>
+      </div>
+
+      <div class="flex justify-center items-center gap-4 z-10" *ngIf="totalPages > 1">
+        <button
+          (click)="prevPage()"
+          [disabled]="currentPage === 0"
+          class="px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-600 disabled:cursor-not-allowed transition-all duration-200 text-sm sm:text-base"
+        >
+          &#8592; Anterior
+        </button>
+
+        <div class="flex gap-1 sm:gap-2">
+          <button
+            *ngFor="let page of pageNumbers; trackBy: trackByPage"
+            (click)="goToPage(page)"
+            [class.bg-blue-600]="page === currentPage"
+            [class.bg-gray-700]="page !== currentPage"
+            class="w-8 h-8 sm:w-10 sm:h-10 text-white rounded-lg hover:bg-blue-700 transition-all duration-200 text-xs sm:text-sm font-medium"
+          >
+            {{ page + 1 }}
+          </button>
+        </div>
+
+        <button
+          (click)="nextPage()"
+          [disabled]="currentPage === totalPages - 1"
+          class="px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-600 disabled:cursor-not-allowed transition-all duration-200 text-sm sm:text-base"
+        >
+          Siguiente &#8594;
+        </button>
+      </div>
+
+      <div class="text-xs sm:text-sm text-gray-300 mt-3 z-10" *ngIf="totalPages > 1">
+        Página {{ currentPage + 1 }} de {{ totalPages }} ({{ albums.length }} álbumes total)
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="showModal" class="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-2 sm:p-4">
+    <div class="relative w-full max-w-4xl">
+
+      <div class="flex justify-between items-center mb-4">
+        <div class="text-white">
+          <h3 class="text-lg sm:text-xl font-semibold">{{ currentAlbum.title }}</h3>
+          <p class="text-xs sm:text-sm text-gray-300">{{ photoIndex + 1 }} de {{ currentAlbum.photos.length }}</p>
+        </div>
+        <button
+          (click)="closeModal()"
+          class="text-white hover:text-red-400 text-2xl sm:text-3xl font-bold transition-colors duration-200 bg-gray-800/50 rounded-full w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center"
+        >
+          &times;
+        </button>
+      </div>
+
+      <div class="relative bg-gray-800 rounded-lg overflow-hidden">
+        <div *ngIf="imageLoading" class="absolute inset-0 flex items-center justify-center bg-gray-800">
+          <div class="animate-spin rounded-full h-8 w-8 sm:h-12 sm:w-12 border-b-2 border-white"></div>
+        </div>
+
+        <img
+          [src]="currentAlbum.photos[photoIndex].imageUrl"
+          [alt]="currentAlbum.photos[photoIndex].caption"
+          (load)="onImageLoad()"
+          (error)="onImageError()"
+          class="w-full h-auto max-h-[60vh] sm:max-h-[70vh] object-contain rounded-lg"
+          [class.opacity-0]="imageLoading"
+          [class.opacity-100]="!imageLoading"
+          style="transition: opacity 0.3s ease-in-out;"
+        />
+
+        <button
+          *ngIf="currentAlbum.photos.length > 1"
+          (click)="prevPhoto()"
+          class="absolute left-2 sm:left-4 top-1/2 transform -translate-y-1/2 text-white text-xl sm:text-2xl bg-black/50 hover:bg-black/70 rounded-full w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center transition-all duration-200 hover:scale-110"
+        >
+          &#8592;
+        </button>
+
+        <button
+          *ngIf="currentAlbum.photos.length > 1"
+          (click)="nextPhoto()"
+          class="absolute right-2 sm:right-4 top-1/2 transform -translate-y-1/2 text-white text-xl sm:text-2xl bg-black/50 hover:bg-black/70 rounded-full w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center transition-all duration-200 hover:scale-110"
+        >
+          &#8594;
+        </button>
+      </div>
+
+      <div *ngIf="currentAlbum.photos.length > 1"
+           class="flex mt-4 space-x-2 overflow-x-auto pb-2">
+        <img
+          *ngFor="let photo of currentAlbum.photos; let i = index"
+          [src]="photo.imageUrl"
+          (click)="selectPhoto(i)"
+          class="h-16 w-20 sm:h-20 sm:w-28 object-cover rounded-lg cursor-pointer border-2 transition-all duration-200 hover:scale-105 flex-shrink-0"
+          [class.border-blue-500]="i === photoIndex"
+          [class.border-gray-400]="i !== photoIndex"
+          [alt]="photo.caption"
+          loading="lazy"
+        />
+      </div>
+    </div>
+  </div>
+</div>
