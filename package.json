@@ -6,7 +6,8 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "deploy": "ng build --base-href \"https://fordfalconsanjuan.github.io/FanaFalcon/\" && node -e \"const fs=require('fs');fs.copyFileSync('dist/FanaFalcon/index.html','dist/FanaFalcon/404.html')\" && npx angular-cli-ghpages --dir=dist/FanaFalcon"
   },
   "prettier": {
     "overrides": [
@@ -38,6 +39,7 @@
     "@angular/cli": "^20.1.0",
     "@angular/compiler-cli": "^20.1.0",
     "@types/jasmine": "~5.1.0",
+    "angular-cli-ghpages": "^2.0.3",
     "jasmine-core": "~5.8.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",
