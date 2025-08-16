@@ -7,7 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "deploy": "ng build --base-href \"https://fordfalconsanjuan.github.io/FanaFalcon/\" && node -e \"const fs=require('fs');fs.copyFileSync('dist/FanaFalcon/index.html','dist/FanaFalcon/404.html')\" && npx angular-cli-ghpages --dir=dist/FanaFalcon"
+    "deploy": "ng build --base-href \"https://fordfalconsanjuan.github.io/FanaFalcon/\" && node -e \"const fs=require('fs'); const path=require('path'); const dist=path.join(__dirname,'dist','FanaFalcon','browser'); fs.copyFileSync(path.join(dist,'index.html'), path.join(dist,'404.html'))\" && npx angular-cli-ghpages --dir=dist/FanaFalcon/browser"
   },
   "prettier": {
     "overrides": [
