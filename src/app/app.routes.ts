@@ -11,14 +11,29 @@ export const routes: Routes = [
   },
   {
     path: 'main',
-    component: MainPage
+    component: MainPage,
+    data: {
+      title: 'Fana Falcon San Juan | Club Ford Falcon',
+      description: 'Comunidad de entusiastas del Ford Falcon en San Juan. Conoce eventos, galerias y actividades del club.',
+      canonicalPath: '/main'
+    }
   },
   {
     path: 'galeria',
-    component: Galeria
+    component: Galeria,
+    data: {
+      title: 'Galeria | Fana Falcon San Juan',
+      description: 'Galeria de encuentros, exposiciones y momentos de Fana Falcon San Juan.',
+      canonicalPath: '/galeria'
+    }
   },
   {
     path: 'albums',
-    component: Albums
+    component: Albums,
+    data: {
+      title: 'Albums | Fana Falcon San Juan',
+      description: 'Albums de actividades solidarias, juntadas y eventos de la comunidad Fana Falcon San Juan.',
+      canonicalPath: '/albums'
+    }
   }
 ];
