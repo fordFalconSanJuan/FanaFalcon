@@ -1,14 +1,16 @@
-import {Component, OnInit, OnDestroy} from '@angular/core';
-import {NgForOf} from '@angular/common';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {NgOptimizedImage} from '@angular/common';
 
 @Component({
   selector: 'app-carousel',
   standalone: true,
-  imports: [NgForOf],
+  imports: [NgOptimizedImage],
   templateUrl: './carousel.html',
   styleUrls: ['./carousel.css']
 })
 export class Carousel implements OnInit, OnDestroy {
+  @Input() highPriority = false;
+
   slides = [
     {imageUrl: 'assets/images/aerea.jpg', caption: 'Aerea'},
     {imageUrl: 'assets/images/aireLibre.jpg', caption: 'Aire Libre'},
@@ -26,7 +28,9 @@ export class Carousel implements OnInit, OnDestroy {
   private intervalId: any;
 
   ngOnInit() {
-    this.startAutoPlay();
+    if (this.slides.length > 1) {
+      this.startAutoPlay();
+    }
   }
 
   ngOnDestroy() {
@@ -34,7 +38,8 @@ export class Carousel implements OnInit, OnDestroy {
   }
 
   private startAutoPlay(): void {
-    this.intervalId = setInterval(() => this.nextSlide(), 4000); // Aumenté a 4 segundos
+    this.stopAutoPlay();
+    this.intervalId = setInterval(() => this.nextSlide(), 4000);
   }
 
   private stopAutoPlay(): void {

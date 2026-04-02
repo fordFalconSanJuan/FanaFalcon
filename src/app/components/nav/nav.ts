@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {NgOptimizedImage} from '@angular/common';
-import {RouterLink, RouterLinkActive} from '@angular/router';
+import {NavigationEnd, Router, RouterLink, RouterLinkActive} from '@angular/router';
+import {filter} from 'rxjs';
 
 @Component({
   selector: 'app-nav',
@@ -14,9 +15,22 @@ import {RouterLink, RouterLinkActive} from '@angular/router';
   styleUrl: './nav.css'
 })
 export class Nav {
+  private readonly router = inject(Router);
   isMobileMenuOpen = false;
+
+  constructor() {
+    this.router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe(() => {
+        this.isMobileMenuOpen = false;
+      });
+  }
 
   toggleMobileMenu() {
     this.isMobileMenuOpen = !this.isMobileMenuOpen;
+  }
+
+  closeMobileMenu(): void {
+    this.isMobileMenuOpen = false;
   }
 }

@@ -1,11 +1,11 @@
-<div class="h-dvh overflow-hidden bg-gradient-to-br from-gray-900 to-black text-white">
-  <div class="relative mt-16 h-[calc(100dvh-4rem)] overflow-hidden px-3 py-2 sm:px-4 sm:py-3">
+<div class="page-shell-albums h-dvh overflow-hidden bg-gradient-to-br from-gray-900 to-black text-white">
+  <div class="page-frame-albums relative mt-16 h-[calc(100dvh-4rem)] overflow-hidden px-3 py-2 sm:px-4 sm:py-3">
     <div class="absolute inset-0 z-0">
       <app-carousel></app-carousel>
     </div>
     <div class="absolute inset-0 z-10 bg-black/60"></div>
 
-    <div class="relative z-20 mx-auto flex h-full w-full max-w-6xl flex-col rounded-xl border border-blue-500/30 bg-gray-900/10 p-3 shadow-2xl backdrop-blur-xl sm:rounded-2xl sm:p-4 lg:p-5
+    <div class="albums-card relative z-20 mx-auto flex h-full w-full max-w-6xl flex-col rounded-xl border border-blue-500/30 bg-gray-900/10 p-3 shadow-2xl backdrop-blur-xl sm:rounded-2xl sm:p-4 lg:p-5
                 before:absolute before:inset-0 before:-z-10 before:bg-[url('assets/images/sanJuanVectorB.png')] before:bg-contain before:bg-center before:bg-no-repeat before:opacity-20 before:rounded-[inherit]
                 after:absolute after:inset-0 after:-z-5 after:bg-gray-900/15 after:rounded-[inherit]">
       <div class="relative z-10 mb-3 flex items-center justify-between gap-3 sm:mb-4">
@@ -24,10 +24,22 @@
         </div>
       </div>
 
-      <div class="relative z-10 min-h-0 flex-1">
-        <div class="grid h-full grid-cols-2 grid-rows-3 gap-2 sm:gap-3 md:grid-cols-3 md:grid-rows-2">
+      <div *ngIf="isLoadingAlbums" class="relative z-10 flex flex-1 items-center justify-center">
+        <div class="text-center text-sm text-blue-200 sm:text-base">
+          Cargando albums...
+        </div>
+      </div>
+
+      <div *ngIf="albumsError" class="relative z-10 flex flex-1 items-center justify-center">
+        <div class="text-center text-sm text-red-300 sm:text-base">
+          No se pudieron cargar los albums. Reintenta en unos segundos.
+        </div>
+      </div>
+
+      <div class="albums-grid-wrap relative z-10 min-h-0 flex-1" *ngIf="!isLoadingAlbums && !albumsError">
+        <div class="albums-grid grid h-full grid-cols-2 grid-rows-3 gap-2 sm:gap-3 md:grid-cols-3 md:grid-rows-2">
           <div
-            *ngFor="let album of paginatedAlbums; let i = index"
+            *ngFor="let album of paginatedAlbums; let i = index; trackBy: trackByAlbum"
             (click)="openAlbum(getAlbumIndex(i))"
             class="group relative h-full w-full cursor-pointer overflow-hidden rounded-lg transition-all duration-300 hover:scale-[1.02]"
           >
@@ -47,7 +59,7 @@
         </div>
       </div>
 
-      <div class="relative z-10 mt-3 flex flex-wrap items-center justify-center gap-2 sm:mt-4 sm:gap-3" *ngIf="totalPages > 1">
+      <div class="albums-pagination relative z-10 mt-3 flex flex-wrap items-center justify-center gap-2 sm:mt-4 sm:gap-3" *ngIf="!isLoadingAlbums && !albumsError && totalPages > 1">
         <button
           (click)="prevPage()"
           [disabled]="currentPage === 0"
@@ -77,14 +89,14 @@
         </button>
       </div>
 
-      <div class="relative z-10 mt-2 text-center text-[11px] text-gray-300 sm:text-xs" *ngIf="totalPages > 1">
+      <div class="albums-page-info relative z-10 mt-2 text-center text-[11px] text-gray-300 sm:text-xs" *ngIf="!isLoadingAlbums && !albumsError && totalPages > 1">
         Página {{ currentPage + 1 }} de {{ totalPages }} ({{ albums.length }} álbumes)
       </div>
     </div>
   </div>
 
-  <div *ngIf="showModal" class="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-2 sm:p-4">
-    <div class="relative w-full max-w-4xl">
+  <div *ngIf="showModal && currentAlbum" class="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-2 sm:p-4" (click)="closeModal()">
+    <div class="relative w-full max-w-4xl" (click)="$event.stopPropagation()" role="dialog" aria-modal="true" [attr.aria-label]="currentAlbum.title">
 
       <div class="flex justify-between items-center mb-4">
         <div class="text-white">
@@ -135,7 +147,7 @@
       <div *ngIf="currentAlbum.photos.length > 1"
            class="flex mt-4 space-x-2 overflow-x-auto pb-2">
         <img
-          *ngFor="let photo of currentAlbum.photos; let i = index"
+          *ngFor="let photo of currentAlbum.photos; let i = index; trackBy: trackByPhoto"
           [src]="photo.imageUrl"
           (click)="selectPhoto(i)"
           class="h-16 w-20 sm:h-20 sm:w-28 object-cover rounded-lg cursor-pointer border-2 transition-all duration-200 hover:scale-105 flex-shrink-0"

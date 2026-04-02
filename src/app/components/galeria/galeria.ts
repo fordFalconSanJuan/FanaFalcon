@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
-import {Nav} from '../nav/nav';
+import {Component} from '@angular/core';
+import {NgOptimizedImage} from '@angular/common';
 
 @Component({
   selector: 'app-galeria',
   imports: [
+    NgOptimizedImage
   ],
   templateUrl: './galeria.html',
   styleUrl: './galeria.css'
@@ -75,22 +76,6 @@ export class Galeria {
   ];
 
   currentSlide = 0;
-  private intervalId: any;
-
-  ngOnInit() {
-
-  }
-
-  ngOnDestroy() {
-
-  }
-
-  private stopAutoPlay(): void {
-    if (this.intervalId) {
-      clearInterval(this.intervalId);
-      this.intervalId = null;
-    }
-  }
 
   nextSlide(): void {
     this.currentSlide = (this.currentSlide + 1) % this.slides.length;
@@ -102,13 +87,5 @@ export class Galeria {
 
   goToSlide(index: number): void {
     this.currentSlide = index;
-  }
-
-  onMouseEnter(): void {
-
-  }
-
-  onMouseLeave(): void {
-
   }
 }

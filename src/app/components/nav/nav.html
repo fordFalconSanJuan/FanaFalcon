@@ -43,14 +43,18 @@
           <a
             href="https://www.instagram.com/fanafalconsanjuan/"
             target="_blank"
+            rel="noopener noreferrer"
             class="text-gray-300 hover:text-pink-400 transition-colors duration-200 p-2 rounded-full hover:bg-pink-500/10"
+            aria-label="Instagram de Fana Falcon San Juan"
           >
             <i class="fab fa-instagram text-xl"></i>
           </a>
           <a
             href="https://www.facebook.com/p/FanaFalcon-Filial-San-Juan-100086399126486/"
             target="_blank"
+            rel="noopener noreferrer"
             class="text-gray-300 hover:text-blue-400 transition-colors duration-200 p-2 rounded-full hover:bg-blue-500/10"
+            aria-label="Facebook de Fana Falcon San Juan"
           >
             <i class="fab fa-facebook text-xl"></i>
           </a>
@@ -60,6 +64,9 @@
       <div class="lg:hidden">
         <button
           (click)="toggleMobileMenu()"
+          [attr.aria-expanded]="isMobileMenuOpen"
+          aria-controls="mobile-menu"
+          aria-label="Abrir o cerrar menu"
           class="text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-400 p-2 rounded-md"
         >
           <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
@@ -83,10 +90,11 @@
     </div>
   </div>
 
-  <div [class.hidden]="!isMobileMenuOpen" class="lg:hidden">
+  <div id="mobile-menu" [class.hidden]="!isMobileMenuOpen" class="lg:hidden">
     <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-gray-800/95 backdrop-blur-sm">
       <a
         routerLink="/albums"
+        (click)="closeMobileMenu()"
         routerLinkActive="text-blue-400 bg-gray-700"
         class="text-gray-300 hover:text-white hover:bg-gray-600 block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 flex items-center space-x-2"
       >
@@ -95,6 +103,7 @@
       </a>
       <a
         routerLink="/galeria"
+        (click)="closeMobileMenu()"
         routerLinkActive="text-blue-400 bg-gray-700"
         class="text-gray-300 hover:text-white hover:bg-gray-600 block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 flex items-center space-x-2"
       >
@@ -106,14 +115,18 @@
         <a
           href="https://www.instagram.com/fanafalconsanjuan/"
           target="_blank"
+          rel="noopener noreferrer"
           class="text-gray-300 hover:text-pink-400 transition-colors duration-200"
+          aria-label="Instagram de Fana Falcon San Juan"
         >
           <i class="fab fa-instagram text-2xl"></i>
         </a>
         <a
           href="https://www.facebook.com/p/FanaFalcon-Filial-San-Juan-100086399126486/"
           target="_blank"
+          rel="noopener noreferrer"
           class="text-gray-300 hover:text-blue-400 transition-colors duration-200"
+          aria-label="Facebook de Fana Falcon San Juan"
         >
           <i class="fab fa-facebook text-2xl"></i>
         </a>
