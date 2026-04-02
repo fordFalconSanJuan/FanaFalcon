@@ -1,62 +1,68 @@
-<div class="min-h-screen bg-gradient-to-br from-gray-900 to-black text-white">
-
-  <div class="relative min-h-screen flex flex-col items-center justify-center pt-20 pb-10 sm:pt-24 sm:pb-12">
-
-    <div class="fixed inset-0 z-0">
+<div class="h-dvh overflow-hidden bg-gradient-to-br from-gray-900 to-black text-white">
+  <div class="relative mt-16 h-[calc(100dvh-4rem)] overflow-hidden px-3 py-2 sm:px-4 sm:py-3">
+    <div class="absolute inset-0 z-0">
       <app-carousel></app-carousel>
     </div>
-    <div class="fixed inset-0 bg-black/60 z-10"></div>
+    <div class="absolute inset-0 z-10 bg-black/60"></div>
 
-    <div class="relative z-20 text-center px-4 sm:px-8 py-6 sm:py-8 max-w-5xl w-full
-                bg-gray-900/10 backdrop-blur-xl rounded-2xl shadow-2xl border border-blue-500/30
-                before:absolute before:inset-0 before:bg-[url('assets/images/sanJuanVectorB.png')] before:bg-no-repeat before:bg-center before:bg-contain before:opacity-20 before:rounded-2xl before:-z-10
-                after:absolute after:inset-0 after:bg-gray-900/15 after:rounded-2xl after:-z-5">
-
-      <div class="relative mb-6 sm:mb-8 z-10">
-        <img
-          ngSrc="assets/images/logo.png"
-          alt="Logo"
-          class="h-32 w-32 sm:h-52 sm:w-52 rounded-full object-cover mx-auto transform transition-transform duration-300 hover:scale-105 ring-4 ring-blue-500/50 shadow-2xl"
-          height="1024" width="1024"/>
-      </div>
-
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 justify-items-center z-10 mb-6">
-        <div
-          *ngFor="let album of paginatedAlbums; let i = index"
-          (click)="openAlbum(getAlbumIndex(i))"
-          class="relative w-full max-w-xs sm:w-64 h-32 sm:h-40 rounded-lg cursor-pointer hover:scale-105 transition-all duration-300 overflow-hidden group"
-        >
-          <div class="absolute inset-0 bg-gradient-to-br from-gray-800/70 to-gray-900/80 backdrop-blur-sm"></div>
-          <div class="absolute inset-0 border-2 border-blue-500/60 rounded-lg group-hover:border-blue-400/80 transition-colors duration-300"></div>
-          <div class="relative z-10 flex flex-col justify-center items-center text-center p-3 sm:p-4 h-full">
-            <div class="text-sm sm:text-lg font-bold text-white mb-1 sm:mb-2 px-2 uppercase tracking-wider racing-font text-chrome">
-              {{ album.title }}
-            </div>
-            <div class="text-xs sm:text-sm text-blue-300 font-medium" style="font-family: 'Rajdhani', sans-serif;">
-              {{ album.photos.length }} fotos
-            </div>
-            <div class="absolute inset-0 bg-blue-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg"></div>
-          </div>
-          <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-blue-400/50 to-transparent transform -translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
+    <div class="relative z-20 mx-auto flex h-full w-full max-w-6xl flex-col rounded-xl border border-blue-500/30 bg-gray-900/10 p-3 shadow-2xl backdrop-blur-xl sm:rounded-2xl sm:p-4 lg:p-5
+                before:absolute before:inset-0 before:-z-10 before:bg-[url('assets/images/sanJuanVectorB.png')] before:bg-contain before:bg-center before:bg-no-repeat before:opacity-20 before:rounded-[inherit]
+                after:absolute after:inset-0 after:-z-5 after:bg-gray-900/15 after:rounded-[inherit]">
+      <div class="relative z-10 mb-3 flex items-center justify-between gap-3 sm:mb-4">
+        <div class="flex min-w-0 items-center gap-2 sm:gap-3">
+          <img
+            ngSrc="assets/images/logo.png"
+            alt="Logo"
+            class="hidden h-11 w-11 rounded-full object-cover ring-2 ring-blue-500/50 shadow-xl sm:block md:h-12 md:w-12"
+            height="1024" width="1024"/>
+          <h1 class="racing-font truncate text-lg font-bold uppercase tracking-[0.07em] text-blue-200 sm:text-xl md:text-2xl">
+            Albums
+          </h1>
+        </div>
+        <div class="whitespace-nowrap text-[11px] font-medium text-gray-300 sm:text-xs">
+          {{ albums.length }} álbumes
         </div>
       </div>
 
-      <div class="flex justify-center items-center gap-4 z-10" *ngIf="totalPages > 1">
+      <div class="relative z-10 min-h-0 flex-1">
+        <div class="grid h-full grid-cols-2 grid-rows-3 gap-2 sm:gap-3 md:grid-cols-3 md:grid-rows-2">
+          <div
+            *ngFor="let album of paginatedAlbums; let i = index"
+            (click)="openAlbum(getAlbumIndex(i))"
+            class="group relative h-full w-full cursor-pointer overflow-hidden rounded-lg transition-all duration-300 hover:scale-[1.02]"
+          >
+            <div class="absolute inset-0 bg-gradient-to-br from-gray-800/70 to-gray-900/80 backdrop-blur-sm"></div>
+            <div class="absolute inset-0 rounded-lg border border-blue-500/60 transition-colors duration-300 group-hover:border-blue-400/80"></div>
+            <div class="relative z-10 flex h-full flex-col items-center justify-center p-2 text-center sm:p-3">
+              <div class="max-h-12 overflow-hidden px-1 text-[11px] font-bold uppercase leading-tight tracking-[0.06em] text-white sm:text-sm md:text-base racing-font text-chrome">
+                {{ album.title }}
+              </div>
+              <div class="mt-1 text-[10px] font-medium text-blue-300 sm:text-xs" style="font-family: 'Rajdhani', sans-serif;">
+                {{ album.photos.length }} fotos
+              </div>
+              <div class="absolute inset-0 rounded-lg bg-blue-500/10 opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
+            </div>
+            <div class="absolute left-0 top-0 h-1 w-full -translate-y-full bg-gradient-to-r from-transparent via-blue-400/50 to-transparent transition-transform duration-500 group-hover:translate-y-0"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="relative z-10 mt-3 flex flex-wrap items-center justify-center gap-2 sm:mt-4 sm:gap-3" *ngIf="totalPages > 1">
         <button
           (click)="prevPage()"
           [disabled]="currentPage === 0"
-          class="px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-600 disabled:cursor-not-allowed transition-all duration-200 text-sm sm:text-base"
+          class="rounded-lg bg-blue-600 px-2.5 py-1.5 text-xs text-white transition-all duration-200 hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-gray-600 sm:text-sm"
         >
           &#8592; Anterior
         </button>
 
-        <div class="flex gap-1 sm:gap-2">
+        <div class="flex gap-1.5">
           <button
             *ngFor="let page of pageNumbers; trackBy: trackByPage"
             (click)="goToPage(page)"
             [class.bg-blue-600]="page === currentPage"
             [class.bg-gray-700]="page !== currentPage"
-            class="w-8 h-8 sm:w-10 sm:h-10 text-white rounded-lg hover:bg-blue-700 transition-all duration-200 text-xs sm:text-sm font-medium"
+            class="h-7 w-7 rounded-lg text-[11px] font-medium text-white transition-all duration-200 hover:bg-blue-700 sm:h-8 sm:w-8 sm:text-xs"
           >
             {{ page + 1 }}
           </button>
@@ -65,14 +71,14 @@
         <button
           (click)="nextPage()"
           [disabled]="currentPage === totalPages - 1"
-          class="px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-600 disabled:cursor-not-allowed transition-all duration-200 text-sm sm:text-base"
+          class="rounded-lg bg-blue-600 px-2.5 py-1.5 text-xs text-white transition-all duration-200 hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-gray-600 sm:text-sm"
         >
           Siguiente &#8594;
         </button>
       </div>
 
-      <div class="text-xs sm:text-sm text-gray-300 mt-3 z-10" *ngIf="totalPages > 1">
-        Página {{ currentPage + 1 }} de {{ totalPages }} ({{ albums.length }} álbumes total)
+      <div class="relative z-10 mt-2 text-center text-[11px] text-gray-300 sm:text-xs" *ngIf="totalPages > 1">
+        Página {{ currentPage + 1 }} de {{ totalPages }} ({{ albums.length }} álbumes)
       </div>
     </div>
   </div>
