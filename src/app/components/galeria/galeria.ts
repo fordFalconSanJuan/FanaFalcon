@@ -15,9 +15,7 @@ export class Galeria {
       imageUrl: 'assets/images/aerea.jpg',
       caption: 'Aerea',
       title: "Foto aérea en la plaza",
-      description: "Lorem ipsum dolor sit amet consectetur adipiscing elit cras mi fermentum, nunc cubilia commodo cursus metus sagittis mattis consequat senectus, libero laoreet massa condimentum magnis bibendum odio vestibulum magna. Habitasse class vestibulum blandit penatibus sagittis sed sodales, arcu magnis nulla potenti pretium commodo tempor, tristique aliquam nullam eget mus pharetra. Integer massa sagittis per sapien odio molestie himenaeos sem, tincidunt consequat in vitae laoreet nunc litora, nibh dictumst venenatis curae etiam feugiat facilisi.\n" +
-        "\n" +
-        "Integer eleifend maecenas condimentum rutrum proin suspendisse cursus, molestie habitasse euismod luctus ornare etiam, posuere in eget urna hendrerit praesent. Massa felis donec tortor quis conubia vulputate porttitor luctus iaculis, rhoncus nunc placerat molestie volutpat imperdiet ridiculus ad eros, libero urna at varius primis gravida dui laoreet. Torquent morbi nisl vestibulum ad luctus lacinia duis curae himenaeos, mauris taciti tempus id nulla eros mollis vivamus, quis proin rutrum laoreet vitae vel ornare elementum."
+      description: "Vista aérea del club reunido en la plaza durante una de nuestras juntadas. Un momento que refleja el espíritu de comunidad y el amor compartido por el Ford Falcon."
     },
     {
       imageUrl: 'assets/images/aireLibre.jpg',
