@@ -1,4 +1,20 @@
 @media (max-height: 760px) {
+  .flyer-modal-overlay {
+    align-items: flex-start;
+    overflow-y: auto;
+  }
+
+  .flyer-modal-content {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+
+.flyer-modal-image {
+    max-height: calc(100dvh - 4rem);
+  }
+}
+
+@media (max-height: 760px) {
   .page-shell-main {
     overflow-y: auto;
   }
@@ -56,6 +72,12 @@
   .hero-socials a {
     padding: 0.55rem;
     font-size: 1rem;
+  }
+}
+
+@media (min-height: 761px) {
+  .flyer-modal-image {
+    max-height: min(90dvh, 860px);
   }
 }
 
