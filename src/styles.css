@@ -177,6 +177,42 @@ p, span, a {
   filter: drop-shadow(0 0 10px rgba(59, 130, 246, 0.5));
 }
 
+.section-divider {
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  margin-inline: auto;
+  height: 1px;
+  width: 92%;
+  background: linear-gradient(to right, transparent, rgba(147, 197, 253, 0.45), transparent);
+  pointer-events: none;
+}
+
+.landing-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(147, 197, 253, 0.4);
+  background-color: rgba(59, 130, 246, 0.12);
+  padding: 0.625rem 1.5rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  font-family: 'Orbitron', monospace;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: #bfdbfe;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.landing-cta:hover {
+  border-color: rgba(147, 197, 253, 0.75);
+  background-color: rgba(59, 130, 246, 0.22);
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.25);
+  transform: translateY(-1px);
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;

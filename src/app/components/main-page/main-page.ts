@@ -1,7 +1,9 @@
 import { NgClass, NgOptimizedImage, isPlatformBrowser } from '@angular/common';
 import { Component, HostListener, OnInit, PLATFORM_ID, inject } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import {Carousel} from '../carousel/carousel';
+import { RouterLink } from '@angular/router';
+import { Carousel } from '../carousel/carousel';
+import { AlbumsService, AlbumItem } from '../../services/albums.service';
 
 interface CommissionRole {
   id: string;
@@ -22,13 +24,13 @@ interface UpcomingEvent {
   mapEmbedUrl?: string;
 }
 
-
 @Component({
   selector: 'app-main-page',
   imports: [
     Carousel,
     NgClass,
-    NgOptimizedImage
+    NgOptimizedImage,
+    RouterLink,
   ],
   templateUrl: './main-page.html',
   styleUrl: './main-page.css'
@@ -36,12 +38,23 @@ interface UpcomingEvent {
 export class MainPage implements OnInit {
   private readonly platformId = inject(PLATFORM_ID);
   private readonly sanitizer = inject(DomSanitizer);
+  private readonly albumsService = inject(AlbumsService);
   private readonly flyerSessionKey = 'homeFlyerSeen';
 
   showFlyerModal = false;
   selectedEvent: UpcomingEvent | null = null;
   selectedEventMapUrl: SafeResourceUrl | null = null;
   activeEventIndex = 0;
+  featuredAlbums: AlbumItem[] = [];
+
+  readonly galleryHighlights = [
+    { imageUrl: 'assets/images/aerea.jpg', caption: 'Vista aérea del encuentro' },
+    { imageUrl: 'assets/images/caravana.jpg', caption: 'Caravana de Falcons' },
+    { imageUrl: 'assets/images/autos.jpg', caption: 'Autos del club' },
+    { imageUrl: 'assets/images/fanaFalcon.jpg', caption: 'Fana Falcon' },
+    { imageUrl: 'assets/images/estacionados.jpg', caption: 'Encuentro en San Juan' },
+    { imageUrl: 'assets/images/aireLibre.jpg', caption: 'Al aire libre' },
+  ];
 
   readonly commissionHead: CommissionRole = {
     id: 'comision',
@@ -120,6 +133,15 @@ export class MainPage implements OnInit {
       this.showFlyerModal = true;
       sessionStorage.setItem(this.flyerSessionKey, 'true');
     }
+
+    this.albumsService.getAlbums().subscribe({
+      next: (albums) => {
+        this.featuredAlbums = albums.slice(0, 3);
+      },
+      error: () => {
+        this.featuredAlbums = [];
+      }
+    });
   }
 
   closeFlyerModal(): void {
@@ -139,27 +161,19 @@ export class MainPage implements OnInit {
   }
 
   showPreviousEvent(): void {
-    if (this.upcomingEvents.length === 0) {
-      return;
-    }
-
+    if (this.upcomingEvents.length === 0) return;
     this.activeEventIndex = (this.activeEventIndex - 1 + this.upcomingEvents.length) % this.upcomingEvents.length;
   }
 
   showNextEvent(): void {
-    if (this.upcomingEvents.length === 0) {
-      return;
-    }
-
+    if (this.upcomingEvents.length === 0) return;
     this.activeEventIndex = (this.activeEventIndex + 1) % this.upcomingEvents.length;
   }
 
   goToEvent(index: number): void {
-    if (index < 0 || index >= this.upcomingEvents.length) {
-      return;
+    if (index >= 0 && index < this.upcomingEvents.length) {
+      this.activeEventIndex = index;
     }
-
-    this.activeEventIndex = index;
   }
 
   @HostListener('document:keydown.escape')
@@ -168,12 +182,8 @@ export class MainPage implements OnInit {
       this.closeFlyerModal();
       return;
     }
-
-    if (!this.selectedEvent) {
-      return;
+    if (this.selectedEvent) {
+      this.closeEventModal();
     }
-
-    this.closeEventModal();
   }
-
 }

@@ -1,31 +1,19 @@
-import {HttpClient} from '@angular/common/http';
-import {Component, OnInit, inject} from '@angular/core';
-import {Carousel} from '../carousel/carousel';
-import {NgForOf, NgIf, NgOptimizedImage} from '@angular/common';
-
-interface AlbumPhoto {
-  imageUrl: string;
-  caption: string;
-}
-
-interface AlbumItem {
-  title: string;
-  photos: AlbumPhoto[];
-}
+import { Component, OnInit, inject } from '@angular/core';
+import { NgOptimizedImage } from '@angular/common';
+import { Carousel } from '../carousel/carousel';
+import { AlbumsService, AlbumItem, AlbumPhoto } from '../../services/albums.service';
 
 @Component({
   selector: 'app-albums',
   imports: [
     Carousel,
     NgOptimizedImage,
-    NgForOf,
-    NgIf
   ],
   templateUrl: './albums.html',
   styleUrl: './albums.css'
 })
 export class Albums implements OnInit {
-  private readonly http = inject(HttpClient);
+  private readonly albumsService = inject(AlbumsService);
 
   albums: AlbumItem[] = [];
   showModal = false;
@@ -53,8 +41,7 @@ export class Albums implements OnInit {
 
   get paginatedAlbums(): AlbumItem[] {
     const startIndex = this.currentPage * this.itemsPerPage;
-    const endIndex = startIndex + this.itemsPerPage;
-    return this.albums.slice(startIndex, endIndex);
+    return this.albums.slice(startIndex, startIndex + this.itemsPerPage);
   }
 
   get pageNumbers(): number[] {
@@ -91,27 +78,12 @@ export class Albums implements OnInit {
     }
   }
 
-  trackByPage(index: number, page: number): number {
-    return page;
-  }
-
-  trackByAlbum(index: number, album: AlbumItem): string {
-    return album.title;
-  }
-
-  trackByPhoto(index: number, photo: AlbumPhoto): string {
-    return photo.imageUrl;
-  }
-
   getAlbumIndex(paginatedIndex: number): number {
     return this.currentPage * this.itemsPerPage + paginatedIndex;
   }
 
   openAlbum(index: number): void {
-    if (!this.albums.length) {
-      return;
-    }
-
+    if (!this.albums.length) return;
     this.selectedAlbumIndex = index;
     this.photoIndex = 0;
     this.showModal = true;
@@ -158,7 +130,7 @@ export class Albums implements OnInit {
   }
 
   private loadAlbums(): void {
-    this.http.get<AlbumItem[]>('assets/data/albums.json').subscribe({
+    this.albumsService.getAlbums().subscribe({
       next: (albums) => {
         this.albums = albums;
         this.currentPage = 0;

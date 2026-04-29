@@ -1,7 +1,8 @@
 import { Component, inject } from '@angular/core';
-import {NgOptimizedImage} from '@angular/common';
-import {NavigationEnd, Router, RouterLink, RouterLinkActive} from '@angular/router';
-import {filter} from 'rxjs';
+import { NgOptimizedImage } from '@angular/common';
+import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { filter } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-nav',
@@ -9,7 +10,6 @@ import {filter} from 'rxjs';
     NgOptimizedImage,
     RouterLink,
     RouterLinkActive,
-
   ],
   templateUrl: './nav.html',
   styleUrl: './nav.css'
@@ -20,7 +20,10 @@ export class Nav {
 
   constructor() {
     this.router.events
-      .pipe(filter((event) => event instanceof NavigationEnd))
+      .pipe(
+        filter((event) => event instanceof NavigationEnd),
+        takeUntilDestroyed()
+      )
       .subscribe(() => {
         this.isMobileMenuOpen = false;
       });

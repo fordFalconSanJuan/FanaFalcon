@@ -24,139 +24,155 @@
         </div>
       </div>
 
-      <div *ngIf="isLoadingAlbums" class="relative z-10 flex flex-1 items-center justify-center">
-        <div class="text-center text-sm text-blue-200 sm:text-base">
-          Cargando albums...
-        </div>
-      </div>
-
-      <div *ngIf="albumsError" class="relative z-10 flex flex-1 items-center justify-center">
-        <div class="text-center text-sm text-red-300 sm:text-base">
-          No se pudieron cargar los albums. Reintenta en unos segundos.
-        </div>
-      </div>
-
-      <div class="albums-grid-wrap relative z-10 min-h-0 flex-1" *ngIf="!isLoadingAlbums && !albumsError">
-        <div class="albums-grid grid h-full grid-cols-2 grid-rows-3 gap-2 sm:gap-3 md:grid-cols-3 md:grid-rows-2">
-          <div
-            *ngFor="let album of paginatedAlbums; let i = index; trackBy: trackByAlbum"
-            (click)="openAlbum(getAlbumIndex(i))"
-            class="group relative h-full w-full cursor-pointer overflow-hidden rounded-lg transition-all duration-300 hover:scale-[1.02]"
-          >
-            <div class="absolute inset-0 bg-gradient-to-br from-gray-800/70 to-gray-900/80 backdrop-blur-sm"></div>
-            <div class="absolute inset-0 rounded-lg border border-blue-500/60 transition-colors duration-300 group-hover:border-blue-400/80"></div>
-            <div class="relative z-10 flex h-full flex-col items-center justify-center p-2 text-center sm:p-3">
-              <div class="max-h-12 overflow-hidden px-1 text-[11px] font-bold uppercase leading-tight tracking-[0.06em] text-white sm:text-sm md:text-base racing-font text-chrome">
-                {{ album.title }}
-              </div>
-              <div class="mt-1 text-[10px] font-medium text-blue-300 sm:text-xs" style="font-family: 'Rajdhani', sans-serif;">
-                {{ album.photos.length }} fotos
-              </div>
-              <div class="absolute inset-0 rounded-lg bg-blue-500/10 opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
-            </div>
-            <div class="absolute left-0 top-0 h-1 w-full -translate-y-full bg-gradient-to-r from-transparent via-blue-400/50 to-transparent transition-transform duration-500 group-hover:translate-y-0"></div>
+      @if (isLoadingAlbums) {
+        <div class="relative z-10 flex flex-1 items-center justify-center">
+          <div class="text-center text-sm text-blue-200 sm:text-base">
+            Cargando albums...
           </div>
         </div>
-      </div>
+      }
 
-      <div class="albums-pagination relative z-10 mt-3 flex flex-wrap items-center justify-center gap-2 sm:mt-4 sm:gap-3" *ngIf="!isLoadingAlbums && !albumsError && totalPages > 1">
-        <button
-          (click)="prevPage()"
-          [disabled]="currentPage === 0"
-          class="rounded-lg bg-blue-600 px-2.5 py-1.5 text-xs text-white transition-all duration-200 hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-gray-600 sm:text-sm"
-        >
-          &#8592; Anterior
-        </button>
+      @if (albumsError) {
+        <div class="relative z-10 flex flex-1 items-center justify-center">
+          <div class="text-center text-sm text-red-300 sm:text-base">
+            No se pudieron cargar los albums. Reintenta en unos segundos.
+          </div>
+        </div>
+      }
 
-        <div class="flex gap-1.5">
+      @if (!isLoadingAlbums && !albumsError) {
+        <div class="albums-grid-wrap relative z-10 min-h-0 flex-1">
+          <div class="albums-grid grid h-full grid-cols-2 grid-rows-3 gap-2 sm:gap-3 md:grid-cols-3 md:grid-rows-2">
+            @for (album of paginatedAlbums; track album.title; let i = $index) {
+              <div
+                (click)="openAlbum(getAlbumIndex(i))"
+                class="group relative h-full w-full cursor-pointer overflow-hidden rounded-lg transition-all duration-300 hover:scale-[1.02]"
+              >
+                <div class="absolute inset-0 bg-gradient-to-br from-gray-800/70 to-gray-900/80 backdrop-blur-sm"></div>
+                <div class="absolute inset-0 rounded-lg border border-blue-500/60 transition-colors duration-300 group-hover:border-blue-400/80"></div>
+                <div class="relative z-10 flex h-full flex-col items-center justify-center p-2 text-center sm:p-3">
+                  <div class="max-h-12 overflow-hidden px-1 text-[11px] font-bold uppercase leading-tight tracking-[0.06em] text-white sm:text-sm md:text-base racing-font text-chrome">
+                    {{ album.title }}
+                  </div>
+                  <div class="mt-1 text-[10px] font-medium text-blue-300 sm:text-xs" style="font-family: 'Rajdhani', sans-serif;">
+                    {{ album.photos.length }} fotos
+                  </div>
+                  <div class="absolute inset-0 rounded-lg bg-blue-500/10 opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
+                </div>
+                <div class="absolute left-0 top-0 h-1 w-full -translate-y-full bg-gradient-to-r from-transparent via-blue-400/50 to-transparent transition-transform duration-500 group-hover:translate-y-0"></div>
+              </div>
+            }
+          </div>
+        </div>
+
+        @if (totalPages > 1) {
+          <div class="albums-pagination relative z-10 mt-3 flex flex-wrap items-center justify-center gap-2 sm:mt-4 sm:gap-3">
+            <button
+              (click)="prevPage()"
+              [disabled]="currentPage === 0"
+              class="rounded-lg bg-blue-600 px-2.5 py-1.5 text-xs text-white transition-all duration-200 hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-gray-600 sm:text-sm"
+            >
+              &#8592; Anterior
+            </button>
+
+            <div class="flex gap-1.5">
+              @for (page of pageNumbers; track page) {
+                <button
+                  (click)="goToPage(page)"
+                  [class.bg-blue-600]="page === currentPage"
+                  [class.bg-gray-700]="page !== currentPage"
+                  class="h-7 w-7 rounded-lg text-[11px] font-medium text-white transition-all duration-200 hover:bg-blue-700 sm:h-8 sm:w-8 sm:text-xs"
+                >
+                  {{ page + 1 }}
+                </button>
+              }
+            </div>
+
+            <button
+              (click)="nextPage()"
+              [disabled]="currentPage === totalPages - 1"
+              class="rounded-lg bg-blue-600 px-2.5 py-1.5 text-xs text-white transition-all duration-200 hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-gray-600 sm:text-sm"
+            >
+              Siguiente &#8594;
+            </button>
+          </div>
+
+          <div class="albums-page-info relative z-10 mt-2 text-center text-[11px] text-gray-300 sm:text-xs">
+            Página {{ currentPage + 1 }} de {{ totalPages }} ({{ albums.length }} álbumes)
+          </div>
+        }
+      }
+    </div>
+  </div>
+
+  @if (showModal && currentAlbum) {
+    <div class="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-2 sm:p-4" (click)="closeModal()">
+      <div class="relative w-full max-w-4xl" (click)="$event.stopPropagation()" role="dialog" aria-modal="true" [attr.aria-label]="currentAlbum.title">
+
+        <div class="flex justify-between items-center mb-4">
+          <div class="text-white">
+            <h3 class="text-lg sm:text-xl font-semibold">{{ currentAlbum.title }}</h3>
+            <p class="text-xs sm:text-sm text-gray-300">{{ photoIndex + 1 }} de {{ currentAlbum.photos.length }}</p>
+          </div>
           <button
-            *ngFor="let page of pageNumbers; trackBy: trackByPage"
-            (click)="goToPage(page)"
-            [class.bg-blue-600]="page === currentPage"
-            [class.bg-gray-700]="page !== currentPage"
-            class="h-7 w-7 rounded-lg text-[11px] font-medium text-white transition-all duration-200 hover:bg-blue-700 sm:h-8 sm:w-8 sm:text-xs"
+            (click)="closeModal()"
+            class="text-white hover:text-red-400 text-2xl sm:text-3xl font-bold transition-colors duration-200 bg-gray-800/50 rounded-full w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center"
           >
-            {{ page + 1 }}
+            &times;
           </button>
         </div>
 
-        <button
-          (click)="nextPage()"
-          [disabled]="currentPage === totalPages - 1"
-          class="rounded-lg bg-blue-600 px-2.5 py-1.5 text-xs text-white transition-all duration-200 hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-gray-600 sm:text-sm"
-        >
-          Siguiente &#8594;
-        </button>
-      </div>
+        <div class="relative bg-gray-800 rounded-lg overflow-hidden">
+          @if (imageLoading) {
+            <div class="absolute inset-0 flex items-center justify-center bg-gray-800">
+              <div class="animate-spin rounded-full h-8 w-8 sm:h-12 sm:w-12 border-b-2 border-white"></div>
+            </div>
+          }
 
-      <div class="albums-page-info relative z-10 mt-2 text-center text-[11px] text-gray-300 sm:text-xs" *ngIf="!isLoadingAlbums && !albumsError && totalPages > 1">
-        Página {{ currentPage + 1 }} de {{ totalPages }} ({{ albums.length }} álbumes)
+          <img
+            [src]="currentAlbum.photos[photoIndex].imageUrl"
+            [alt]="currentAlbum.photos[photoIndex].caption"
+            (load)="onImageLoad()"
+            (error)="onImageError()"
+            class="w-full h-auto max-h-[60vh] sm:max-h-[70vh] object-contain rounded-lg"
+            [class.opacity-0]="imageLoading"
+            [class.opacity-100]="!imageLoading"
+            style="transition: opacity 0.3s ease-in-out;"
+          />
+
+          @if (currentAlbum.photos.length > 1) {
+            <button
+              (click)="prevPhoto()"
+              class="absolute left-2 sm:left-4 top-1/2 transform -translate-y-1/2 text-white text-xl sm:text-2xl bg-black/50 hover:bg-black/70 rounded-full w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center transition-all duration-200 hover:scale-110"
+            >
+              &#8592;
+            </button>
+
+            <button
+              (click)="nextPhoto()"
+              class="absolute right-2 sm:right-4 top-1/2 transform -translate-y-1/2 text-white text-xl sm:text-2xl bg-black/50 hover:bg-black/70 rounded-full w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center transition-all duration-200 hover:scale-110"
+            >
+              &#8594;
+            </button>
+          }
+        </div>
+
+        @if (currentAlbum.photos.length > 1) {
+          <div class="flex mt-4 space-x-2 overflow-x-auto pb-2">
+            @for (photo of currentAlbum.photos; track photo.imageUrl; let i = $index) {
+              <img
+                [src]="photo.imageUrl"
+                (click)="selectPhoto(i)"
+                class="h-16 w-20 sm:h-20 sm:w-28 object-cover rounded-lg cursor-pointer border-2 transition-all duration-200 hover:scale-105 flex-shrink-0"
+                [class.border-blue-500]="i === photoIndex"
+                [class.border-gray-400]="i !== photoIndex"
+                [alt]="photo.caption"
+                loading="lazy"
+              />
+            }
+          </div>
+        }
       </div>
     </div>
-  </div>
-
-  <div *ngIf="showModal && currentAlbum" class="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-2 sm:p-4" (click)="closeModal()">
-    <div class="relative w-full max-w-4xl" (click)="$event.stopPropagation()" role="dialog" aria-modal="true" [attr.aria-label]="currentAlbum.title">
-
-      <div class="flex justify-between items-center mb-4">
-        <div class="text-white">
-          <h3 class="text-lg sm:text-xl font-semibold">{{ currentAlbum.title }}</h3>
-          <p class="text-xs sm:text-sm text-gray-300">{{ photoIndex + 1 }} de {{ currentAlbum.photos.length }}</p>
-        </div>
-        <button
-          (click)="closeModal()"
-          class="text-white hover:text-red-400 text-2xl sm:text-3xl font-bold transition-colors duration-200 bg-gray-800/50 rounded-full w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center"
-        >
-          &times;
-        </button>
-      </div>
-
-      <div class="relative bg-gray-800 rounded-lg overflow-hidden">
-        <div *ngIf="imageLoading" class="absolute inset-0 flex items-center justify-center bg-gray-800">
-          <div class="animate-spin rounded-full h-8 w-8 sm:h-12 sm:w-12 border-b-2 border-white"></div>
-        </div>
-
-        <img
-          [src]="currentAlbum.photos[photoIndex].imageUrl"
-          [alt]="currentAlbum.photos[photoIndex].caption"
-          (load)="onImageLoad()"
-          (error)="onImageError()"
-          class="w-full h-auto max-h-[60vh] sm:max-h-[70vh] object-contain rounded-lg"
-          [class.opacity-0]="imageLoading"
-          [class.opacity-100]="!imageLoading"
-          style="transition: opacity 0.3s ease-in-out;"
-        />
-
-        <button
-          *ngIf="currentAlbum.photos.length > 1"
-          (click)="prevPhoto()"
-          class="absolute left-2 sm:left-4 top-1/2 transform -translate-y-1/2 text-white text-xl sm:text-2xl bg-black/50 hover:bg-black/70 rounded-full w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center transition-all duration-200 hover:scale-110"
-        >
-          &#8592;
-        </button>
-
-        <button
-          *ngIf="currentAlbum.photos.length > 1"
-          (click)="nextPhoto()"
-          class="absolute right-2 sm:right-4 top-1/2 transform -translate-y-1/2 text-white text-xl sm:text-2xl bg-black/50 hover:bg-black/70 rounded-full w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center transition-all duration-200 hover:scale-110"
-        >
-          &#8594;
-        </button>
-      </div>
-
-      <div *ngIf="currentAlbum.photos.length > 1"
-           class="flex mt-4 space-x-2 overflow-x-auto pb-2">
-        <img
-          *ngFor="let photo of currentAlbum.photos; let i = index; trackBy: trackByPhoto"
-          [src]="photo.imageUrl"
-          (click)="selectPhoto(i)"
-          class="h-16 w-20 sm:h-20 sm:w-28 object-cover rounded-lg cursor-pointer border-2 transition-all duration-200 hover:scale-105 flex-shrink-0"
-          [class.border-blue-500]="i === photoIndex"
-          [class.border-gray-400]="i !== photoIndex"
-          [alt]="photo.caption"
-          loading="lazy"
-        />
-      </div>
-    </div>
-  </div>
+  }
 </div>
