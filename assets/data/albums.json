@@ -1,22 +1,5 @@
 [
   {
-    "title": "Album Prueba",
-    "photos": [
-      {
-        "imageUrl": "assets/images/albumPrueba/albumprueba2.webp",
-        "caption": "Foto 2 Album Prueba"
-      },
-      {
-        "imageUrl": "assets/images/albumPrueba/albumprueba3.webp",
-        "caption": "Foto 3 Album Prueba"
-      },
-      {
-        "imageUrl": "assets/images/albumPrueba/albumprueba4.webp",
-        "caption": "Foto 4 Album Prueba"
-      }
-    ]
-  },
-  {
     "title": "Caravana Casamiento Civil Jaime",
     "photos": [
       {
