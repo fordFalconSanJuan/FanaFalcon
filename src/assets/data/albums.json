@@ -3,10 +3,6 @@
     "title": "Album Prueba",
     "photos": [
       {
-        "imageUrl": "assets/images/albumPrueba/albumprueba1.webp",
-        "caption": "Foto 1 Album Prueba"
-      },
-      {
         "imageUrl": "assets/images/albumPrueba/albumprueba2.webp",
         "caption": "Foto 2 Album Prueba"
       },
