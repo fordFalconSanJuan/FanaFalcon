@@ -1,54 +1,5 @@
 [
   {
-    "title": "Album Prueba 123",
-    "photos": [
-      {
-        "imageUrl": "assets/images/albumPrueba123/albumprueba1232.webp",
-        "caption": "Foto 2 Album Prueba 123"
-      },
-      {
-        "imageUrl": "assets/images/albumPrueba123/albumprueba1233.webp",
-        "caption": "Foto 3 Album Prueba 123"
-      },
-      {
-        "imageUrl": "assets/images/albumPrueba123/albumprueba1234.webp",
-        "caption": "Foto 4 Album Prueba 123"
-      },
-      {
-        "imageUrl": "assets/images/albumPrueba123/albumprueba1235.webp",
-        "caption": "Foto 5 Album Prueba 123"
-      },
-      {
-        "imageUrl": "assets/images/albumPrueba123/albumprueba1236.webp",
-        "caption": "Foto 6 Album Prueba 123"
-      },
-      {
-        "imageUrl": "assets/images/albumPrueba123/albumprueba1237.webp",
-        "caption": "Foto 7 Album Prueba 123"
-      },
-      {
-        "imageUrl": "assets/images/albumPrueba123/albumprueba1238.webp",
-        "caption": "Foto 8 Album Prueba 123"
-      },
-      {
-        "imageUrl": "assets/images/albumPrueba123/albumprueba1239.webp",
-        "caption": "Foto 9 Album Prueba 123"
-      },
-      {
-        "imageUrl": "assets/images/albumPrueba123/albumprueba12310.webp",
-        "caption": "Foto 10 Album Prueba 123"
-      },
-      {
-        "imageUrl": "assets/images/albumPrueba123/albumprueba12311.webp",
-        "caption": "Foto 11 Album Prueba 123"
-      },
-      {
-        "imageUrl": "assets/images/albumPrueba123/albumprueba12312.webp",
-        "caption": "Foto 12 Album Prueba 123"
-      }
-    ]
-  },
-  {
     "title": "Caravana Casamiento Civil Jaime",
     "photos": [
       {
