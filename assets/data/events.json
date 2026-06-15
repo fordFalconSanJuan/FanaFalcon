@@ -1,12 +1,12 @@
 [
   {
     "id": "mtm-audio",
-    "title": "MTM Audio San Juan",
+    "title": "MTM Audio San Juan 2026",
     "dateLabel": "Sábado 23 de mayo 2026",
     "location": "Parque de Chimbas",
     "summary": "Competencias y promociones del MTM Audio: presentá tu máquina en las distintas categorías y disputá cada premiación.",
-    "imageUrl": "assets/images/expoFanaFestFlyer.jpeg",
     "status": "Evento destacado",
+    "imageUrl": "assets/images/expoFanaFestFlyer.jpeg",
     "isFlyer": true,
     "details": [
       "Limbo: General, Neumática y Vale todo",
